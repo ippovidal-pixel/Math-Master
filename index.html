@@ -47,7 +47,7 @@
         --sab: env(safe-area-inset-bottom);
       }
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter', 'system-ui', sans-serif;
         background-color: #f8fafc;
         color: #0f172a;
         margin: 0;
@@ -85,30 +85,43 @@
     "react/": "https://aistudiocdn.com/react@^19.2.1/",
     "react": "https://aistudiocdn.com/react@^19.2.1",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
 </head>
   <body>
-    <div id="root"></div>
-<!--
+    <div class="min-h-screen flex items-center justify-center">
+  <div class="academic-card p-6 max-w-md text-center">
+    <h1 class="text-2xl font-bold text-brand-800">
+      MathMaster
+    </h1>
+    <p class="mt-2 text-slate-600">
+      Your site is now working on GitHub Pages 🎉
+    </p>
+  </div>
+</div>
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          const swPath = new URL('./sw.js', window.location.href).href;
-          navigator.serviceWorker.register(swPath)
-            .then(reg => console.log('Service Worker Active:', reg.scope))
-            .catch(err => {
-              if (window.location.hostname.includes('usercontent.goog')) {
-                console.warn('SW registration skipped in sandbox frame.');
-              } else {
-                console.error('SW registration failed:', err);
-              }
-            });
-        });
-      }
+      /**
+       * Service Worker Registration Logic
+       * Defensive implementation to handle sandboxed/preview environments.
+       */
+      (function() {
+        const isSandbox = window.location.hostname.includes('usercontent.goog') || 
+                          window.location.hostname.includes('ai.studio');
+        
+        if ('serviceWorker' in navigator && !isSandbox && window.isSecureContext) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+              .then(reg => console.log('MathMaster SW Registered:', reg.scope))
+              .catch(err => console.debug('MathMaster SW skipped (likely cross-origin restriction).'));
+          });
+        } else {
+          console.log('MathMaster: Service Worker disabled for this environment (sandbox detected).');
+        }
+      })();
     </script>
--->
   </body>
 </html>
